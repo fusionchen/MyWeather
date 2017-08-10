@@ -2,15 +2,185 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="me.myweather.myweather.MainActivity$PlaceholderFragment">
+    tools:context="me.myweather.app.activity.MainActivity$PlaceholderFragment">
 
-    <TextView
-        android:id="@+id/section_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/sunny_day"
+            android:alpha="0.7"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/city"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="5dp"
+                        android:layout_weight="1"
+                        android:shadowColor="@color/nightColor"
+                        android:shadowDx="@integer/shadow_dx"
+                        android:shadowDy="@integer/shadow_dy"
+                        android:shadowRadius="@integer/shadow_size_large"
+                        android:text="沈阳"
+                        android:textColor="@color/dayColor"
+                        android:textSize="35sp" />
+
+                    <TextView
+                        android:id="@+id/status_now"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="-13dp"
+                        android:shadowColor="@color/nightColor"
+                        android:shadowDx="@integer/shadow_dx"
+                        android:shadowDy="@integer/shadow_dy"
+                        android:shadowRadius="@integer/shadow_size_large"
+                        android:textSize="20sp"
+                        android:textColor="@color/dayColor"
+                        android:text="有零星阵雨" />
+
+                    <TextView
+                        android:id="@+id/temperature_now"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:shadowColor="@color/nightColor"
+                        android:shadowDx="@integer/shadow_dx"
+                        android:shadowDy="@integer/shadow_dy"
+                        android:shadowRadius="@integer/shadow_size_large"
+                        android:text="28°"
+                        android:textColor="@color/dayColor"
+                        android:textSize="90sp" />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="3">
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_marginLeft="@dimen/margin_lr"
+                    android:layout_marginRight="@dimen/margin_lr"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/day1_week"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:shadowColor="@color/nightColor"
+                        android:shadowDx="@integer/shadow_dx"
+                        android:shadowDy="@integer/shadow_dy"
+                        android:shadowRadius="@integer/shadow_size_small"
+                        android:textSize="@dimen/info_size"
+                        android:textColor="@color/dayColor"
+                        android:textStyle="bold"
+                        android:text="星期四" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:shadowColor="@color/nightColor"
+                        android:shadowDx="@integer/shadow_dx"
+                        android:shadowDy="@integer/shadow_dy"
+                        android:shadowRadius="@integer/shadow_size_small"
+                        android:textSize="@dimen/info_size"
+                        android:textColor="@color/grayColor"
+                        android:textStyle="bold"
+                        android:text="今天" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="10"></LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/day1_day_temperature"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginRight="@dimen/margin_lr"
+                            android:shadowColor="@color/nightColor"
+                            android:shadowDx="@integer/shadow_dx"
+                            android:shadowDy="@integer/shadow_dy"
+                            android:shadowRadius="@integer/shadow_size_small"
+                            android:text="29"
+                            android:textColor="@color/dayColor"
+                            android:textSize="@dimen/info_size"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/day1_night_temperature"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:shadowColor="@color/nightColor"
+                            android:shadowDx="@integer/shadow_dx"
+                            android:shadowDy="@integer/shadow_dy"
+                            android:shadowRadius="@integer/shadow_size_small"
+                            android:text="22"
+                            android:textColor="@color/grayColor"
+                            android:textSize="@dimen/info_size"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <!-- line -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginTop="@dimen/margin_tb"
+                    android:layout_marginBottom="@dimen/margin_tb"
+                    android:background="#ffffff"></LinearLayout>
+
+                <ListView
+                    android:layout_marginLeft="@dimen/margin_lr"
+                    android:layout_marginRight="@dimen/margin_lr"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scrollbars="none"
+                    android:fadingEdge="none"/>
+
+
+            </LinearLayout>
+        </LinearLayout>
+
+    </FrameLayout>
 
 </RelativeLayout>

@@ -4,4 +4,14 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="appbar_padding_top">8dp</dimen>
+    <dimen name="city_size">25sp</dimen>
+    <dimen name="info_size">20sp</dimen>
+    <integer name="shadow_size_large">10</integer>
+    <integer name="shadow_size_small">5</integer>
+    <integer name="shadow_dx">1</integer>
+    <integer name="shadow_dy">1</integer>
+    <dimen name="margin_lr">20dp</dimen>
+    <dimen name="margin_tb">10dp</dimen>
+    <dimen name="item_manage_city_height">100dp</dimen>
+    <dimen name="cf_size">30sp</dimen>
 </resources>

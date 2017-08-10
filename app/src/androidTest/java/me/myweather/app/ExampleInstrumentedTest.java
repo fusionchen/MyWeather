@@ -1,4 +1,4 @@
-package me.myweather.myweather;
+package me.myweather.app;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
