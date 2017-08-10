@@ -14,7 +14,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        useJack(true);
+//        useJack(true);
     }
     buildTypes {
         release {
@@ -32,21 +32,23 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support:design:25.3.1'
     compile 'com.android.support:support-v4:25.3.1'
+    compile 'com.victor:lib:1.0.4'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
 }
-//
-//buildscript {
-//    repositories {
-//        mavenCentral()
-//    }
-//
-//    dependencies {
-//        classpath 'me.tatarka:gradle-retrolambda:3.2.4'
-//    }
-//}
-//
-//repositories {
-//    mavenCentral()
-//}
-//
-//apply plugin: 'me.tatarka.retrolambda'
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'me.tatarka:gradle-retrolambda:3.2.4'
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+apply plugin: 'me.tatarka.retrolambda'
