@@ -1,5 +1,6 @@
 package me.myweather.app.been;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,6 +21,12 @@ public class NowWeather {
     private String info;
     private String infocode;
     private List<LivesBean> lives;
+
+    public static NowWeather getDefaultInstance() {
+        NowWeather nowWeather = new NowWeather();
+        nowWeather.lives = new ArrayList<>();
+        return nowWeather;
+    }
 
     public String getStatus() {
         return status;
@@ -75,7 +82,7 @@ public class NowWeather {
          */
 
         private String province;
-        private String city;
+        private String city = "——";
         private String adcode;
         private String weather;
         private String temperature;

@@ -14,4 +14,7 @@ public class BeenFactory {
         T instance = gson.fromJson(jsonString, classOfT);
         return instance;
     }
+    public static String toJsonString(Object object) {
+        return gson.toJson(object);
+    }
 }

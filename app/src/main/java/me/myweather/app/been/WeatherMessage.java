@@ -1,5 +1,6 @@
 package me.myweather.app.been;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,6 +22,16 @@ public class WeatherMessage {
     private String info;
     private String infocode;
     private List<ForecastsBean> forecasts;
+
+    public static WeatherMessage getDefaultInstance() {
+        WeatherMessage weatherMessage = new WeatherMessage();
+        weatherMessage.forecasts = new ArrayList<>();
+        ForecastsBean forecastsBean = new ForecastsBean();
+        weatherMessage.forecasts.add(forecastsBean);
+        forecastsBean.setCity("——");
+        forecastsBean.casts = new ArrayList<>();
+        return weatherMessage;
+    }
 
     public String getStatus() {
         return status;
@@ -71,7 +82,7 @@ public class WeatherMessage {
          * casts : [{"date":"2017-08-11","week":"5","dayweather":"多云","nightweather":"多云","daytemp":"31","nighttemp":"22","daywind":"西南","nightwind":"西南","daypower":"≤3","nightpower":"≤3"},{"date":"2017-08-12","week":"6","dayweather":"多云","nightweather":"多云","daytemp":"31","nighttemp":"22","daywind":"西南","nightwind":"西南","daypower":"≤3","nightpower":"≤3"},{"date":"2017-08-13","week":"7","dayweather":"多云","nightweather":"多云","daytemp":"31","nighttemp":"22","daywind":"西南","nightwind":"北","daypower":"≤3","nightpower":"≤3"},{"date":"2017-08-14","week":"1","dayweather":"雷阵雨","nightweather":"雷阵雨","daytemp":"27","nighttemp":"21","daywind":"北","nightwind":"北","daypower":"≤3","nightpower":"≤3"}]
          */
 
-        private String city;
+        private String city = "——";
         private String adcode;
         private String province;
         private String reporttime;

@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.google.gson.GsonBuilder;
@@ -42,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
-    private Button manageCityButton;
+    private ImageButton manageCityButton;
     private RotateLoading rotateLoading;
     private HttpTool refreshTool;
     private CityCodes cityCodes = new CityCodes();
@@ -57,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         init();
 
 
-        manageCityButton = (Button) findViewById(R.id.button_manage_city);
+        manageCityButton = (ImageButton) findViewById(R.id.button_manage_city);
         manageCityButton.setOnClickListener((view)->{
             cityCodes.add("150100");
             sendGetWeather();
@@ -109,6 +110,9 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onResponse(String response) {
+                if(response == null) {
+                    response = BeenFactory.toJsonString(WeatherMessage.getDefaultInstance());
+                }
                 weatherMessageHashMap.put(cityCode, response);
                 refreshTimes++;
                 if(refreshTimes == cityCodes.size() * 2) {
@@ -130,6 +134,9 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onResponse(String response) {
+                if(response == null) {
+                    response = BeenFactory.toJsonString(NowWeather.getDefaultInstance());
+                }
                 nowWeatherHashMap.put(cityCode, response);
                 refreshTimes++;
                 if(refreshTimes == cityCodes.size() * 2) {

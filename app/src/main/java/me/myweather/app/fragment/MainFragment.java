@@ -93,8 +93,12 @@ public class MainFragment extends Fragment {
                 return;
             WeatherMessage weatherMessage = BeenFactory.getInstance(strings[0], WeatherMessage.class);
             NowWeather nowWeather = BeenFactory.getInstance(strings[1], NowWeather.class);
-            if(weatherMessage.isNull() || nowWeather.isNull())
-                return;
+            try {
+                if (weatherMessage.isNull() || nowWeather.isNull())
+                    return;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             WeatherMessage.ForecastsBean.CastsBean day1Weather = weatherMessage.getForecasts().get(0).getCasts().get(0);
             NowWeather.LivesBean nowWeatherLive = nowWeather.getLives().get(0);
             tvCity = (TextView) rootView.findViewById(R.id.city);

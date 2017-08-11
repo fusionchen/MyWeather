@@ -9,9 +9,10 @@
         android:layout_height="match_parent">
 
         <ImageView
+            android:id="@+id/bg"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/sunny_day"/>
+            android:background="@drawable/bg_much_cloud"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -40,7 +41,7 @@
                         android:shadowDx="@integer/shadow_dx"
                         android:shadowDy="@integer/shadow_dy"
                         android:shadowRadius="@integer/shadow_size_large"
-                        android:text="沈阳"
+                        android:text="——"
                         android:textColor="@color/dayColor"
                         android:textSize="35sp" />
 
@@ -57,7 +58,7 @@
                         android:shadowRadius="@integer/shadow_size_large"
                         android:textSize="20sp"
                         android:textColor="@color/dayColor"
-                        android:text="有零星阵雨" />
+                        android:text="——" />
 
                     <TextView
                         android:id="@+id/temperature_now"
@@ -69,7 +70,7 @@
                         android:shadowDx="@integer/shadow_dx"
                         android:shadowDy="@integer/shadow_dy"
                         android:shadowRadius="@integer/shadow_size_large"
-                        android:text="28°"
+                        android:text="——°"
                         android:textColor="@color/dayColor"
                         android:textSize="100sp" />
                 </LinearLayout>
@@ -101,7 +102,7 @@
                         android:textSize="@dimen/info_size"
                         android:textColor="@color/dayColor"
                         android:textStyle="bold"
-                        android:text="星期四" />
+                        android:text="" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -115,7 +116,7 @@
                         android:textSize="@dimen/info_size"
                         android:textColor="@color/grayColor"
                         android:textStyle="bold"
-                        android:text="今天" />
+                        android:text="" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -133,7 +134,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginRight="@dimen/margin_lr"
-                            android:text="29"
+                            android:text=""
                             android:shadowColor="@color/nightColor"
                             android:shadowDx="@integer/shadow_dx"
                             android:shadowDy="@integer/shadow_dy"
@@ -151,7 +152,7 @@
                             android:shadowDx="@integer/shadow_dx"
                             android:shadowDy="@integer/shadow_dy"
                             android:shadowRadius="@integer/shadow_size_small"
-                            android:text="22"
+                            android:text=""
                             android:textColor="@color/grayColor"
                             android:textSize="@dimen/info_size"
                             android:textStyle="bold" />
@@ -163,9 +164,8 @@
                 <!-- line -->
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="2dp"
+                    android:layout_height="@dimen/line_height"
                     android:layout_marginTop="@dimen/margin_tb"
-                    android:layout_marginBottom="@dimen/margin_tb"
                     android:background="#ffffff"/>
 
                 <ListView
@@ -174,15 +174,16 @@
                     android:layout_marginRight="@dimen/margin_lr"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:divider="@null"
                     android:scrollbars="none"
                     android:fadingEdge="none"/>
 
                 <!-- line -->
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:layout_marginBottom="@dimen/margin_tb"
+                    android:layout_height="@dimen/line_height"
                     android:layout_marginTop="@dimen/margin_tb"
+                    android:layout_marginBottom="@dimen/margin_tb"
                     android:background="#ffffff">
 
                 </LinearLayout>
@@ -203,11 +204,11 @@
                         android:textColor="@color/dayColor"
                         android:textSize="@dimen/info_size"
                         android:textStyle="bold"
-                        android:text="白天多云，最高气温31°。夜间多云，最低气温22°"/>
+                        android:text="——"/>
                     <!-- line -->
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="2dp"
+                        android:layout_height="@dimen/line_height"
                         android:layout_marginBottom="@dimen/margin_tb"
                         android:layout_marginTop="@dimen/margin_tb"
                         android:background="#ffffff">
@@ -223,7 +224,7 @@
                         android:textColor="@color/dayColor"
                         android:textSize="@dimen/info_size"
                         android:textStyle="bold"
-                        android:text="风向：西南"/>
+                        android:text="风向：——"/>
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -235,11 +236,10 @@
                         android:textColor="@color/dayColor"
                         android:textSize="@dimen/info_size"
                         android:textStyle="bold"
-                        android:text="风速：6米/秒"/>
+                        android:text="风速：——"/>
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="30dp"
                         android:gravity="center"
                         android:shadowColor="@color/nightColor"
                         android:shadowDx="@integer/shadow_dx"
@@ -248,7 +248,7 @@
                         android:textColor="@color/dayColor"
                         android:textSize="@dimen/info_size"
                         android:textStyle="bold"
-                        android:text="湿度：54%"/>
+                        android:text="湿度：——"/>
                 </LinearLayout>
 
 
