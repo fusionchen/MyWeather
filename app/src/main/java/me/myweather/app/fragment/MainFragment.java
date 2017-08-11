@@ -91,13 +91,16 @@ public class MainFragment extends Fragment {
             String[] strings = jsonString.split(BeenFactory.SPLIT_STRING);
             if(strings.length < 2)
                 return;
-            WeatherMessage weatherMessage = BeenFactory.getInstance(strings[0], WeatherMessage.class);
-            NowWeather nowWeather = BeenFactory.getInstance(strings[1], NowWeather.class);
+            WeatherMessage weatherMessage = WeatherMessage.getDefaultInstance();
+            NowWeather nowWeather = NowWeather.getDefaultInstance();
             try {
+                weatherMessage = BeenFactory.getInstance(strings[0], WeatherMessage.class);
+                nowWeather = BeenFactory.getInstance(strings[1], NowWeather.class);
                 if (weatherMessage.isNull() || nowWeather.isNull())
                     return;
             } catch (Exception e) {
-                e.printStackTrace();
+                //e.printStackTrace();
+                return;
             }
             WeatherMessage.ForecastsBean.CastsBean day1Weather = weatherMessage.getForecasts().get(0).getCasts().get(0);
             NowWeather.LivesBean nowWeatherLive = nowWeather.getLives().get(0);

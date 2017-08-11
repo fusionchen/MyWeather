@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
 
         manageCityButton = (ImageButton) findViewById(R.id.button_manage_city);
         manageCityButton.setOnClickListener((view)->{
-            cityCodes.add("150100");
+            cityCodes.add("1503333100");
             sendGetWeather();
         });
     }
