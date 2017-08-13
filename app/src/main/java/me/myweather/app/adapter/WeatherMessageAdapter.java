@@ -14,6 +14,7 @@ import java.util.TreeSet;
 
 import me.myweather.app.R;
 import me.myweather.app.been.WeatherMessage;
+import me.myweather.app.factory.WeatherIconFactory;
 import me.myweather.app.tool.NumberWeekTool;
 
 /**
@@ -68,6 +69,7 @@ public class WeatherMessageAdapter extends BaseAdapter {
         weatherTag.tvWeek.setText(NumberWeekTool.getWeekByNumber(weather.getWeek()));
         weatherTag.tvDayTemperature.setText(weather.getDaytemp());
         weatherTag.tvNightTemperature.setText(weather.getNighttemp());
+        weatherTag.ivIcon.setBackgroundResource(WeatherIconFactory.getDayResource(weather.getDayweather()));
         return convertView;
     }
 

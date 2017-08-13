@@ -21,8 +21,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.ManageCityActivity" />
-        <activity android:name=".activity.LoadingActivity">
-        </activity>
     </application>
 
 </manifest>

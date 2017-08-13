@@ -32,7 +32,7 @@ public class CityCodes extends ArrayList<String> {
     public void setCityCodes(String...cityCodes) {
         this.cityCodes = new ArrayList<>();
         for(String string : cityCodes) {
-            this.cityCodes.add(string);
+            this.add(string);
         }
         this.clear();
         this.addAll(this.cityCodes);

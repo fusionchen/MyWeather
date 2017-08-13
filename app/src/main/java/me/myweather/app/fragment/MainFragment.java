@@ -1,18 +1,22 @@
 package me.myweather.app.fragment;
 
+import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import me.myweather.app.R;
 import me.myweather.app.adapter.WeatherMessageAdapter;
-import me.myweather.app.been.BeenFactory;
+import me.myweather.app.factory.BeenFactory;
 import me.myweather.app.been.NowWeather;
 import me.myweather.app.been.WeatherMessage;
+import me.myweather.app.factory.WeatherBackgroundFactory;
+import me.myweather.app.tool.DayHintTool;
 import me.myweather.app.tool.NumberWeekTool;
 
 /**
@@ -41,6 +45,11 @@ public class MainFragment extends Fragment {
     private TextView tvDay1Week;
     private TextView tvDay1DayTempeerature;
     private TextView tvDay1NightTemperature;
+    private TextView tvDayHint;
+    private TextView tvWindVector;
+    private TextView tvWindSpeed;
+    private TextView tvHumidity;
+    private ImageView ivBG;
 
 
     public MainFragment() {
@@ -110,17 +119,31 @@ public class MainFragment extends Fragment {
             tvDay1Week = (TextView)rootView.findViewById(R.id.day1_week);
             tvDay1DayTempeerature = (TextView) rootView.findViewById(R.id.day1_day_temperature);
             tvDay1NightTemperature = (TextView) rootView.findViewById(R.id.day1_night_temperature);
+            tvDayHint = (TextView) rootView.findViewById(R.id.day_hint);
+            tvWindVector = (TextView)rootView.findViewById(R.id.wind_vector);
+            tvWindSpeed = (TextView) rootView.findViewById(R.id.wind_speed);
+            tvHumidity = (TextView) rootView.findViewById(R.id.dry_percont);
+            ivBG = (ImageView) rootView.findViewById(R.id.bg);
 
             tvCity.setText(weatherMessage.getForecasts().get(0).getCity());
             tvStatusNow.setText(nowWeatherLive.getWeather());
-            tvTemperatureNow.setText(nowWeatherLive.getTemperature() + "°");
+            tvTemperatureNow.setText(nowWeatherLive.getTemperature());
             tvDay1Week.setText(NumberWeekTool.getWeekByNumber(day1Weather.getWeek()));
             tvDay1DayTempeerature.setText(day1Weather.getDaytemp());
             tvDay1NightTemperature.setText(day1Weather.getNighttemp());
+            tvDayHint.setText(DayHintTool.getHint(day1Weather.getDayweather(), day1Weather.getDaywind(), day1Weather.getDaytemp(),
+                    day1Weather.getNightweather(), day1Weather.getNightwind(), day1Weather.getNighttemp()));
+            tvWindVector.setText(DayHintTool.getWindVector(nowWeatherLive.getWinddirection()));
+            tvWindSpeed.setText(DayHintTool.getWindSpeed(nowWeatherLive.getWindpower()));
+            tvHumidity.setText(DayHintTool.getHumidity(nowWeatherLive.getHumidity()));
+            try {
+                ivBG.setBackgroundResource(WeatherBackgroundFactory.getResource(nowWeatherLive.getWeather()));
+            }catch (Exception e) {
+                e.printStackTrace();
+            }
 
             lvWeather = (ListView) rootView.findViewById(R.id.list_weather);
             lvWeather.setAdapter(new WeatherMessageAdapter(this.getContext(), weatherMessage));
         }
     }
-
 }

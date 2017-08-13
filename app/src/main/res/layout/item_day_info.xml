@@ -10,15 +10,15 @@
 
         <ImageView
             android:id="@+id/icon"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_weight="1"
             android:layout_gravity="center"
-            android:src="@drawable/icon_sunny" />
+            android:src="@drawable/icon_none" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="35dp"
             android:orientation="horizontal">
 
             <TextView

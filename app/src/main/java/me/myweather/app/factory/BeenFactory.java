@@ -1,4 +1,4 @@
-package me.myweather.app.been;
+package me.myweather.app.factory;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

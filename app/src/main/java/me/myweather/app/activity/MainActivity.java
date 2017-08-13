@@ -1,5 +1,6 @@
 package me.myweather.app.activity;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 
 import android.support.v4.app.Fragment;
@@ -7,18 +8,16 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.google.gson.GsonBuilder;
 import com.victor.loading.rotate.RotateLoading;
 
 import java.io.IOException;
 import java.util.HashMap;
 
 import me.myweather.app.R;
-import me.myweather.app.been.BeenFactory;
+import me.myweather.app.factory.BeenFactory;
 import me.myweather.app.been.CityCodes;
 import me.myweather.app.been.NowWeather;
 import me.myweather.app.been.WeatherMessage;
@@ -50,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     private HashMap<String, String> weatherMessageHashMap = new HashMap<>();
     private HashMap<String, String> nowWeatherHashMap = new HashMap<>();
     private int refreshTimes = 0;
+    private boolean sendFlag = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,18 +57,28 @@ public class MainActivity extends AppCompatActivity {
         //my init actions
         init();
 
-
         manageCityButton = (ImageButton) findViewById(R.id.button_manage_city);
-        manageCityButton.setOnClickListener((view)->{
-            cityCodes.add("1503333100");
+        manageCityButton.setOnClickListener((view) -> {
+            Intent i = new Intent();
+            i.setClass(this, ManageCityActivity.class);
+            startActivity(i);
+        });
+        rotateLoading.setOnClickListener((view)->{
+            if(rotateLoading.isStart())
+                return;
             sendGetWeather();
         });
     }
 
-    private void init() {
-        rotateLoading = (RotateLoading) findViewById(R.id.loading);
+    @Override
+    protected void onResume() {
+        super.onResume();
         initCity();
         initWeather();
+    }
+
+    private void init() {
+        rotateLoading = (RotateLoading) findViewById(R.id.loading);
     }
 
     private void initCity() {
@@ -90,8 +100,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void sendGetWeather() {
+        if(sendFlag)
+            return;
         rotateLoading.start();
         refreshTimes = 0;
+        lockSendFlag();
         for(String cityCode : cityCodes) {
             sendGetWeatherMessage(cityCode);
             sendGetNowWeather(cityCode);
@@ -103,6 +116,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call call, IOException e) {
                 runOnUiThread(() -> {
+                    unlockSendFlag();
                     rotateLoading.stop();
                     Toast.makeText(MainActivity.this, "天气信息获取失败…", Toast.LENGTH_SHORT).show();
                 });
@@ -127,6 +141,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call call, IOException e) {
                 runOnUiThread(() -> {
+                    unlockSendFlag();
                     rotateLoading.stop();
                     Toast.makeText(MainActivity.this, "天气信息获取失败…", Toast.LENGTH_SHORT).show();
                 });
@@ -148,15 +163,24 @@ public class MainActivity extends AppCompatActivity {
 
     public void refreshSuccess() {
         try {
-            Thread.sleep(2000);
+            Thread.sleep(500);
             runOnUiThread(()->{
                 createViewPager();
+                unlockSendFlag();
                 rotateLoading.stop();
                 Toast.makeText(MainActivity.this, "天气信息获取成功！", Toast.LENGTH_SHORT).show();
             });
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+    
+    public void lockSendFlag() {
+        sendFlag = true;
+    }
+    
+    public void unlockSendFlag() {
+        sendFlag = false;
     }
 
 
