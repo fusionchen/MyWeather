@@ -1,6 +1,5 @@
 package me.myweather.app.fragment;
 
-import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -12,10 +11,11 @@ import android.widget.TextView;
 
 import me.myweather.app.R;
 import me.myweather.app.adapter.WeatherMessageAdapter;
-import me.myweather.app.factory.BeenFactory;
+import me.myweather.app.tool.JsonTool;
 import me.myweather.app.been.NowWeather;
 import me.myweather.app.been.WeatherMessage;
 import me.myweather.app.factory.WeatherBackgroundFactory;
+import me.myweather.app.tool.CityNameCodeTool;
 import me.myweather.app.tool.DayHintTool;
 import me.myweather.app.tool.NumberWeekTool;
 
@@ -32,10 +32,12 @@ public class MainFragment extends Fragment {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
     private static final String ARG_JSON_STRING = "json_string";
+    private static final String ARG_CITY_CODE = "city_code";
 
     // TODO: Rename and change types of parameters
     private int selectionNumber;
     private String jsonString;
+    private String citycode;
 
     //views
     private ListView lvWeather;
@@ -65,11 +67,12 @@ public class MainFragment extends Fragment {
      * @return A new instance of fragment MainFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static MainFragment newInstance(int selectionNumber, String jsonString) {
+    public static MainFragment newInstance(int selectionNumber, String jsonString, String citycode) {
         MainFragment fragment = new MainFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_SECTION_NUMBER, selectionNumber);
         args.putString(ARG_JSON_STRING, jsonString);
+        args.putString(ARG_CITY_CODE, citycode);
         fragment.setArguments(args);
         return fragment;
     }
@@ -80,6 +83,7 @@ public class MainFragment extends Fragment {
         if (getArguments() != null) {
             selectionNumber = getArguments().getInt(ARG_SECTION_NUMBER);
             jsonString = getArguments().getString(ARG_JSON_STRING);
+            citycode = getArguments().getString(ARG_CITY_CODE);
         }
     }
 
@@ -97,14 +101,16 @@ public class MainFragment extends Fragment {
      */
     public void injectData(View rootView) {
         if(jsonString != null) {
-            String[] strings = jsonString.split(BeenFactory.SPLIT_STRING);
+            String[] strings = jsonString.split(JsonTool.SPLIT_STRING);
             if(strings.length < 2)
                 return;
             WeatherMessage weatherMessage = WeatherMessage.getDefaultInstance();
             NowWeather nowWeather = NowWeather.getDefaultInstance();
+            tvCity = (TextView) rootView.findViewById(R.id.city);
+            tvCity.setText(CityNameCodeTool.code2name(citycode));
             try {
-                weatherMessage = BeenFactory.getInstance(strings[0], WeatherMessage.class);
-                nowWeather = BeenFactory.getInstance(strings[1], NowWeather.class);
+                weatherMessage = JsonTool.getInstance(strings[0], WeatherMessage.class);
+                nowWeather = JsonTool.getInstance(strings[1], NowWeather.class);
                 if (weatherMessage.isNull() || nowWeather.isNull())
                     return;
             } catch (Exception e) {
@@ -113,7 +119,6 @@ public class MainFragment extends Fragment {
             }
             WeatherMessage.ForecastsBean.CastsBean day1Weather = weatherMessage.getForecasts().get(0).getCasts().get(0);
             NowWeather.LivesBean nowWeatherLive = nowWeather.getLives().get(0);
-            tvCity = (TextView) rootView.findViewById(R.id.city);
             tvStatusNow = (TextView)rootView.findViewById(R.id.status_now);
             tvTemperatureNow = (TextView) rootView.findViewById(R.id.temperature_now);
             tvDay1Week = (TextView)rootView.findViewById(R.id.day1_week);
@@ -125,7 +130,6 @@ public class MainFragment extends Fragment {
             tvHumidity = (TextView) rootView.findViewById(R.id.dry_percont);
             ivBG = (ImageView) rootView.findViewById(R.id.bg);
 
-            tvCity.setText(weatherMessage.getForecasts().get(0).getCity());
             tvStatusNow.setText(nowWeatherLive.getWeather());
             tvTemperatureNow.setText(nowWeatherLive.getTemperature());
             tvDay1Week.setText(NumberWeekTool.getWeekByNumber(day1Weather.getWeek()));

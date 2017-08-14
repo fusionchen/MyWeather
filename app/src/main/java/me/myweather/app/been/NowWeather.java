@@ -1,5 +1,6 @@
 package me.myweather.app.been;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +8,7 @@ import java.util.List;
  * Created by admin on 2017/8/11.
  */
 
-public class NowWeather {
+public class NowWeather implements Serializable {
     /**
      * status : 1
      * count : 1
@@ -68,7 +69,7 @@ public class NowWeather {
         this.lives = lives;
     }
 
-    public static class LivesBean {
+    public static class LivesBean implements Serializable {
         /**
          * province : 辽宁
          * city : 沈阳市

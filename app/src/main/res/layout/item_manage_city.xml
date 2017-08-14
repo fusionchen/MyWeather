@@ -6,15 +6,15 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/item_manage_city_height"
+        android:layout_height="wrap_content"
         android:background="@color/grayColor">
 
         <ImageView
+            android:id="@+id/bg"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/launch_image"
-            android:visibility="gone"
-            android:alpha="0.7"/>
+            android:scaleType="matrix"
+            android:layout_height="@dimen/item_manage_city_height"
+            android:src="@drawable/launch_image" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -34,6 +34,7 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="@dimen/margin_lr"
@@ -52,6 +53,7 @@
                 </LinearLayout>
 
                 <TextView
+                    android:id="@+id/city"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -70,6 +72,7 @@
                 android:layout_weight="1"
                 android:orientation="vertical"/>
             <TextView
+                android:id="@+id/temperature"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginRight="-5dp"
@@ -79,7 +82,7 @@
                 android:shadowRadius="@integer/shadow_size_large"
                 android:textColor="@color/dayColor"
                 android:textSize="80sp"
-                android:text="26°"/>
+                android:text="——°"/>
         </LinearLayout>
     </FrameLayout>
 

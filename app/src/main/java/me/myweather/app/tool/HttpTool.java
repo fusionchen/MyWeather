@@ -3,6 +3,8 @@ package me.myweather.app.tool;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.HashSet;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -15,6 +17,7 @@ import okhttp3.Response;
  */
 
 public class HttpTool {
+    private static HashSet<Call> links = new HashSet<>();
     private OkHttpClient client;
     private HttpTool.Callback callback;
     public HttpTool(){
@@ -32,14 +35,18 @@ public class HttpTool {
         if(callback == null)
             throw new NullPointerException("Callback should not be null.");
         Request request = getRequestBuilder().url(url).get().build();
-        client.newCall(request).enqueue(new okhttp3.Callback() {
+        Call call = client.newCall(request);
+        links.add(call);
+        call.enqueue(new okhttp3.Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
+                links.remove(call);
                 callback.onFailure(call, e);
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
+                links.remove(call);
                 String result = getStringByResponse(response);
                 callback.onResponse(result);
             }
@@ -63,6 +70,13 @@ public class HttpTool {
             e.printStackTrace();
             return null;
         }
+    }
+    public static void disconnectAll() {
+        for(Call call : links){
+            if(call.isExecuted())
+                call.cancel();
+        }
+        links.clear();
     }
 
     public static interface Callback {

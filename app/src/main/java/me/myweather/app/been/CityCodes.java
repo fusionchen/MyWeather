@@ -8,12 +8,16 @@ import java.util.Collection;
 import java.util.List;
 import java.util.ArrayList;
 
+import me.myweather.app.tool.PreferenceTool;
+
 /**
  * Created by admin on 2017/8/11.
  */
 
 public class CityCodes extends ArrayList<String> {
-    private ArrayList<String> cityCodes;
+
+    final public static String KEY_CITY_CODES = "city_codes";
+
     public CityCodes(){
         super();
     }
@@ -21,24 +25,23 @@ public class CityCodes extends ArrayList<String> {
         setCityCodes(cityCodes);
     }
     public void setCityCodes(ArrayList<String> cityCodes) {
-        this.cityCodes = cityCodes;
         this.clear();
-        this.addAll(this.cityCodes);
-    }
-    public void setCityCodes(String jsonString) {
-        this.cityCodes = new GsonBuilder().create().fromJson(jsonString, new TypeToken<ArrayList<String>>(){}.getType());
-        setCityCodes(this.cityCodes);
-    }
-    public void setCityCodes(String...cityCodes) {
-        this.cityCodes = new ArrayList<>();
         for(String string : cityCodes) {
             this.add(string);
         }
+    }
+    public void setCityCodesByJson(String jsonString) {
+        CityCodes cityCodes = new GsonBuilder().create().fromJson(jsonString, getClass());
+        setCityCodes(cityCodes);
+    }
+    public void setCityCodes(String...cityCodes) {
         this.clear();
-        this.addAll(this.cityCodes);
+        for(String string : cityCodes) {
+            this.add(string);
+        }
     }
     public String getCityCodesString() {
-        return new GsonBuilder().create().toJson(cityCodes, new TypeToken<ArrayList<String>>(){}.getType());
+        return new GsonBuilder().create().toJson(this, getClass());
     }
     public boolean add(String element) {
         for(String str : this) {
@@ -47,5 +50,13 @@ public class CityCodes extends ArrayList<String> {
         }
         super.add(element);
         return true;
+    }
+    public void loadCityCodes() {
+        String jCityCodes = PreferenceTool.load(KEY_CITY_CODES, null);
+        if(jCityCodes != null)
+            this.setCityCodesByJson(jCityCodes);
+    }
+    public void saveCityCodes() {
+        PreferenceTool.save(KEY_CITY_CODES, getCityCodesString());
     }
 }

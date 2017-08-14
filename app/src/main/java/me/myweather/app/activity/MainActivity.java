@@ -1,5 +1,6 @@
 package me.myweather.app.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 
@@ -11,22 +12,28 @@ import android.os.Bundle;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.google.gson.reflect.TypeToken;
 import com.victor.loading.rotate.RotateLoading;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.HashMap;
 
 import me.myweather.app.R;
-import me.myweather.app.factory.BeenFactory;
+import me.myweather.app.tool.JsonTool;
 import me.myweather.app.been.CityCodes;
 import me.myweather.app.been.NowWeather;
 import me.myweather.app.been.WeatherMessage;
 import me.myweather.app.fragment.MainFragment;
+import me.myweather.app.tool.CityNameCodeTool;
+import me.myweather.app.tool.PreferenceTool;
 import me.myweather.app.tool.WeatherURLTool;
 import me.myweather.app.tool.HttpTool;
+import me.relex.circleindicator.CircleIndicator;
 import okhttp3.Call;
 
 public class MainActivity extends AppCompatActivity {
+
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -44,12 +51,16 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager mViewPager;
     private ImageButton manageCityButton;
     private RotateLoading rotateLoading;
+    private CircleIndicator circleIndicator;
+
     private HttpTool refreshTool;
     private CityCodes cityCodes = new CityCodes();
+    private int currentPage = 0;
     private HashMap<String, String> weatherMessageHashMap = new HashMap<>();
     private HashMap<String, String> nowWeatherHashMap = new HashMap<>();
     private int refreshTimes = 0;
     private boolean sendFlag = false;
+    private static Context context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,12 +71,16 @@ public class MainActivity extends AppCompatActivity {
         manageCityButton = (ImageButton) findViewById(R.id.button_manage_city);
         manageCityButton.setOnClickListener((view) -> {
             Intent i = new Intent();
+            i.putExtra(JsonTool.KEY_NOW_WEATHER, nowWeatherHashMap);
             i.setClass(this, ManageCityActivity.class);
             startActivity(i);
         });
         rotateLoading.setOnClickListener((view)->{
-            if(rotateLoading.isStart())
+            if(rotateLoading.isStart()){
+                rotateLoading.stop();
+                HttpTool.disconnectAll();
                 return;
+            }
             sendGetWeather();
         });
     }
@@ -73,8 +88,17 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        PreferenceTool.init(this);
+        CityNameCodeTool.init(this);
         initCity();
         initWeather();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        HttpTool.disconnectAll();
+        cityCodes.saveCityCodes();
     }
 
     private void init() {
@@ -82,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initCity() {
-        cityCodes.setCityCodes("210100", "110000");
+        cityCodes.loadCityCodes();
     }
 
     private void initWeather() {
@@ -93,15 +117,36 @@ public class MainActivity extends AppCompatActivity {
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-
+        circleIndicator = (CircleIndicator) findViewById(R.id.indicator);
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
+        mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+        circleIndicator.setViewPager(mViewPager);
     }
 
     private void sendGetWeather() {
         if(sendFlag)
             return;
+        if(mViewPager != null)
+            currentPage = mViewPager.getCurrentItem();
+        else
+            currentPage = 0;
         rotateLoading.start();
         refreshTimes = 0;
         lockSendFlag();
@@ -125,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
                 if(response == null) {
-                    response = BeenFactory.toJsonString(WeatherMessage.getDefaultInstance());
+                    response = JsonTool.toJsonString(WeatherMessage.getDefaultInstance());
                 }
                 weatherMessageHashMap.put(cityCode, response);
                 refreshTimes++;
@@ -150,7 +195,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
                 if(response == null) {
-                    response = BeenFactory.toJsonString(NowWeather.getDefaultInstance());
+                    response = JsonTool.toJsonString(NowWeather.getDefaultInstance());
                 }
                 nowWeatherHashMap.put(cityCode, response);
                 refreshTimes++;
@@ -163,9 +208,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void refreshSuccess() {
         try {
-            Thread.sleep(500);
+            Thread.sleep(100);
             runOnUiThread(()->{
                 createViewPager();
+                setCurrentPage(currentPage);
                 unlockSendFlag();
                 rotateLoading.stop();
                 Toast.makeText(MainActivity.this, "天气信息获取成功！", Toast.LENGTH_SHORT).show();
@@ -183,7 +229,20 @@ public class MainActivity extends AppCompatActivity {
         sendFlag = false;
     }
 
-
+    public void setCurrentPage(int pos) {
+        //先强制设定跳转到指定页面
+        try {
+            Field field = mViewPager.getClass().getField("mCurItem");//参数mCurItem是系统自带的
+            field.setAccessible(true);
+            field.setInt(mViewPager,pos);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        //然后调用下面的函数刷新数据
+        mSectionsPagerAdapter.notifyDataSetChanged();
+        //再调用setCurrentItem()函数设置一次
+        mViewPager.setCurrentItem(pos);
+    }
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
@@ -200,7 +259,7 @@ public class MainActivity extends AppCompatActivity {
             // Return a PlaceholderFragment (defined as a static inner class below).
             String weatherMessage = weatherMessageHashMap.get(cityCodes.get(position));
             String nowWeather = nowWeatherHashMap.get(cityCodes.get(position));
-            return MainFragment.newInstance(position + 1, weatherMessage + BeenFactory.SPLIT_STRING + nowWeather);
+            return MainFragment.newInstance(position + 1, weatherMessage + JsonTool.SPLIT_STRING + nowWeather, cityCodes.get(position));
         }
 
         @Override
