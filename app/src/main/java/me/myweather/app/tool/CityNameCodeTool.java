@@ -51,11 +51,17 @@ public class CityNameCodeTool {
         return codeMaps.get(code);
     }
     public static ArrayList<String> findCity(String keyword) {
+        if(keyword == null || keyword.equals(""))
+            return new ArrayList<>();
         ArrayList<String> results = new ArrayList<>();
         for(String name : names) {
             if(name.contains(keyword))
                 results.add(name);
         }
         return results;
+    }
+
+    public static ArrayList<String> getNames() {
+        return names;
     }
 }

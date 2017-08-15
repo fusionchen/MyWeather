@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -34,6 +35,7 @@ import okhttp3.Call;
 
 public class MainActivity extends AppCompatActivity {
 
+    final public static int KEY_POS = 0;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -60,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
     private HashMap<String, String> nowWeatherHashMap = new HashMap<>();
     private int refreshTimes = 0;
     private boolean sendFlag = false;
+    private boolean pageFlag = false;
     private static Context context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
             Intent i = new Intent();
             i.putExtra(JsonTool.KEY_NOW_WEATHER, nowWeatherHashMap);
             i.setClass(this, ManageCityActivity.class);
-            startActivity(i);
+            startActivityForResult(i, KEY_POS);
         });
         rotateLoading.setOnClickListener((view)->{
             if(rotateLoading.isStart()){
@@ -86,10 +89,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case KEY_POS:
+                if(data == null)
+                    return;
+                int pos = data.getIntExtra(KEY_POS + "", 0);
+                this.currentPage = pos;
+                if(pos < cityCodes.size())
+                    setCurrentPage(pos);
+                pageFlag = true;
+                break;
+        }
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
-        PreferenceTool.init(this);
-        CityNameCodeTool.init(this);
         initCity();
         initWeather();
     }
@@ -103,10 +120,14 @@ public class MainActivity extends AppCompatActivity {
 
     private void init() {
         rotateLoading = (RotateLoading) findViewById(R.id.loading);
+        PreferenceTool.init(this);
+        CityNameCodeTool.init(this);
     }
 
     private void initCity() {
         cityCodes.loadCityCodes();
+        if(mSectionsPagerAdapter != null)
+            mSectionsPagerAdapter.notifyDataSetChanged();
     }
 
     private void initWeather() {
@@ -117,36 +138,25 @@ public class MainActivity extends AppCompatActivity {
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        mSectionsPagerAdapter.notifyDataSetChanged();
         circleIndicator = (CircleIndicator) findViewById(R.id.indicator);
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
-        mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
+        mViewPager.setOffscreenPageLimit(3);
         circleIndicator.setViewPager(mViewPager);
     }
 
     private void sendGetWeather() {
+        if(cityCodes.isEmpty()) {
+            createViewPager();
+            return;
+        }
         if(sendFlag)
             return;
-        if(mViewPager != null)
+        if(mViewPager != null && pageFlag == false)
             currentPage = mViewPager.getCurrentItem();
-        else
-            currentPage = 0;
+        pageFlag = false;
         rotateLoading.start();
         refreshTimes = 0;
         lockSendFlag();
@@ -208,7 +218,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void refreshSuccess() {
         try {
-            Thread.sleep(100);
+            Thread.sleep(1000);
             runOnUiThread(()->{
                 createViewPager();
                 setCurrentPage(currentPage);
@@ -230,14 +240,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setCurrentPage(int pos) {
-        //先强制设定跳转到指定页面
-        try {
-            Field field = mViewPager.getClass().getField("mCurItem");//参数mCurItem是系统自带的
-            field.setAccessible(true);
-            field.setInt(mViewPager,pos);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
         //然后调用下面的函数刷新数据
         mSectionsPagerAdapter.notifyDataSetChanged();
         //再调用setCurrentItem()函数设置一次
@@ -256,7 +258,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
+            // Return a PlaceholderFragment (defined as a static inner class below).\
             String weatherMessage = weatherMessageHashMap.get(cityCodes.get(position));
             String nowWeather = nowWeatherHashMap.get(cityCodes.get(position));
             return MainFragment.newInstance(position + 1, weatherMessage + JsonTool.SPLIT_STRING + nowWeather, cityCodes.get(position));
@@ -272,5 +274,6 @@ public class MainActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
                return null;
         }
+
     }
 }

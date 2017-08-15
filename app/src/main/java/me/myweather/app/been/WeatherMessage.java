@@ -23,13 +23,16 @@ public class WeatherMessage {
     private String infocode;
     private List<ForecastsBean> forecasts;
 
-    public static WeatherMessage getDefaultInstance() {
-        WeatherMessage weatherMessage = new WeatherMessage();
-        weatherMessage.forecasts = new ArrayList<>();
+    public WeatherMessage() {
+        forecasts = new ArrayList<>();
         ForecastsBean forecastsBean = new ForecastsBean();
-        weatherMessage.forecasts.add(forecastsBean);
+        forecasts.add(forecastsBean);
         forecastsBean.setCity("——");
         forecastsBean.casts = new ArrayList<>();
+    }
+
+    public static WeatherMessage getDefaultInstance() {
+        WeatherMessage weatherMessage = new WeatherMessage();
         return weatherMessage;
     }
 

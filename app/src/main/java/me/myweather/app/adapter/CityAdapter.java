@@ -28,7 +28,7 @@ import me.myweather.app.tool.JsonTool;
 
 public class CityAdapter extends BaseAdapter {
 
-    private CityCodes cityCodes;
+    private CityCodes cityCodes = new CityCodes();
     private HashMap<String, NowWeather> nowWeatherHashMap = new HashMap<>();
     private Context context;
 
@@ -38,7 +38,7 @@ public class CityAdapter extends BaseAdapter {
         for(String citycode : cityCodes) {
             this.nowWeatherHashMap.put(citycode, JsonTool.getInstance(nowWeatherHashMap.get(citycode), NowWeather.class));
         }
-        this.cityCodes = cityCodes;
+        this.cityCodes.addAll(cityCodes);
     }
 
     @Override
@@ -77,10 +77,10 @@ public class CityAdapter extends BaseAdapter {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm");
         tag.tvTime.setText(simpleDateFormat.format(new Date()));
         int bgID = R.drawable.launch_image;
-        if(nowWeatherHashMap.get(citycode) != null) {
+        if(nowWeatherHashMap.get(citycode) != null && !nowWeatherHashMap.get(citycode).isNull()) {
             NowWeather.LivesBean livesBean = nowWeatherHashMap.get(citycode).getLives().get(0);
             tag.tvTemperature.setText(livesBean.getTemperature() + "°");
-            bgID = WeatherBackgroundFactory.getResource(livesBean.getWeather());
+            //bgID = WeatherBackgroundFactory.getResource(livesBean.getWeather());
         }
         tag.ivBG.setImageResource(bgID);
         return convertView;
@@ -91,5 +91,17 @@ public class CityAdapter extends BaseAdapter {
         TextView tvTime;
         TextView tvCity;
         TextView tvTemperature;
+    }
+
+    public void addItem(String citycode, NowWeather nowWeather) {
+        cityCodes.add(citycode);
+        nowWeatherHashMap.put(citycode, nowWeather);
+        notifyDataSetChanged();
+    }
+
+    public void removeItem(int pos) {
+        nowWeatherHashMap.remove(cityCodes.get(pos));
+        cityCodes.remove(pos);
+        notifyDataSetChanged();
     }
 }

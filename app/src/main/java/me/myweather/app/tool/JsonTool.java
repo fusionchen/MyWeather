@@ -5,6 +5,9 @@ import com.google.gson.GsonBuilder;
 
 import java.lang.reflect.Type;
 
+import me.myweather.app.been.NowWeather;
+import me.myweather.app.been.WeatherMessage;
+
 /**
  * Created by admin on 2017/8/11.
  */
@@ -14,8 +17,17 @@ public class JsonTool {
     final public static String KEY_NOW_WEATHER = "now_weather";
     private static Gson gson = new GsonBuilder().create();
     public static <T> T getInstance(String jsonString, Type classOfT) {
-        T instance = gson.fromJson(jsonString, classOfT);
-        return instance;
+        try {
+            T instance = gson.fromJson(jsonString, classOfT);
+            return instance;
+        } catch (Exception e) {
+            if(classOfT == NowWeather.class)
+                return (T) NowWeather.getDefaultInstance();
+            else if(classOfT == WeatherMessage.class)
+                return (T) WeatherMessage.getDefaultInstance();
+            else
+                return null;
+        }
     }
     public static String toJsonString(Object object) {
         return gson.toJson(object);

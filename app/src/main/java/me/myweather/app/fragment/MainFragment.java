@@ -141,7 +141,7 @@ public class MainFragment extends Fragment {
             tvWindSpeed.setText(DayHintTool.getWindSpeed(nowWeatherLive.getWindpower()));
             tvHumidity.setText(DayHintTool.getHumidity(nowWeatherLive.getHumidity()));
             try {
-                ivBG.setBackgroundResource(WeatherBackgroundFactory.getResource(nowWeatherLive.getWeather()));
+                //ivBG.setBackgroundResource(WeatherBackgroundFactory.getResource(nowWeatherLive.getWeather()));
             }catch (Exception e) {
                 e.printStackTrace();
             }

@@ -1,285 +1,270 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+tools:context="me.myweather.app.fragment.MainFragment"
+android:layout_width="match_parent"
+android:layout_height="match_parent">
+
+<ImageView
+    android:id="@+id/bg"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="me.myweather.app.fragment.MainFragment">
+    android:background="@drawable/launch_image"/>
 
-    <FrameLayout
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/bg"
+        <TextView
+            android:id="@+id/city"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="5dp"
+            android:shadowColor="@color/nightColor"
+            android:shadowDx="@integer/shadow_dx"
+            android:shadowDy="@integer/shadow_dy"
+            android:shadowRadius="@integer/shadow_size_large"
+            android:text="——"
+            android:textColor="@color/dayColor"
+            android:textSize="35sp" />
+
+        <TextView
+            android:id="@+id/status_now"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="-13dp"
+            android:shadowColor="@color/nightColor"
+            android:shadowDx="@integer/shadow_dx"
+            android:shadowDy="@integer/shadow_dy"
+            android:shadowRadius="@integer/shadow_size_large"
+            android:text="——"
+            android:textColor="@color/dayColor"
+            android:textSize="20sp" />
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/launch_image"/>
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/temperature_now"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:shadowColor="@color/nightColor"
+                android:shadowDx="@integer/shadow_dx"
+                android:shadowDy="@integer/shadow_dy"
+                android:shadowRadius="@integer/shadow_size_large"
+                android:text="——"
+                android:textColor="@color/dayColor"
+                android:textSize="120sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/temperature_now"
+                android:layout_toRightOf="@id/temperature_now"
+                android:shadowColor="@color/nightColor"
+                android:shadowDx="@integer/shadow_dx"
+                android:shadowDy="@integer/shadow_dy"
+                android:shadowRadius="@integer/shadow_size_large"
+                android:text="@string/degree"
+                android:textColor="@color/dayColor"
+                android:textSize="120sp" />
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_marginLeft="@dimen/margin_lr"
+            android:layout_marginRight="@dimen/margin_lr"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/day1_week"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:shadowColor="@color/nightColor"
+                android:shadowDx="@integer/shadow_dx"
+                android:shadowDy="@integer/shadow_dy"
+                android:shadowRadius="@integer/shadow_size_small"
+                android:textSize="@dimen/info_size"
+                android:textColor="@color/dayColor"
+                android:textStyle="bold"
+                android:text="" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:shadowColor="@color/nightColor"
+                android:shadowDx="@integer/shadow_dx"
+                android:shadowDy="@integer/shadow_dy"
+                android:shadowRadius="@integer/shadow_size_small"
+                android:textSize="@dimen/info_size"
+                android:textColor="@color/grayColor"
+                android:textStyle="bold"
+                android:text="@string/today" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"></LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/day1_day_temperature"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="@dimen/margin_lr"
+                    android:text=""
+                    android:shadowColor="@color/nightColor"
+                    android:shadowDx="@integer/shadow_dx"
+                    android:shadowDy="@integer/shadow_dy"
+                    android:shadowRadius="@integer/shadow_size_small"
+                    android:textColor="@color/dayColor"
+                    android:textSize="@dimen/info_size"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/day1_night_temperature"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:shadowColor="@color/nightColor"
+                    android:shadowDx="@integer/shadow_dx"
+                    android:shadowDy="@integer/shadow_dy"
+                    android:shadowRadius="@integer/shadow_size_small"
+                    android:text=""
+                    android:textColor="@color/grayColor"
+                    android:textSize="@dimen/info_size"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- line -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/line_height"
+            android:layout_marginTop="@dimen/margin_tb"
+            android:background="#ffffff"/>
+
+        <ListView
+            android:id="@+id/list_weather"
+            android:layout_marginLeft="@dimen/margin_lr"
+            android:layout_marginRight="@dimen/margin_lr"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:divider="@null"
+            android:clickable="false"
+            android:scrollbars="none"
+            android:fadingEdge="none"/>
+
+        <!-- line -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/line_height"
+            android:layout_marginTop="@dimen/margin_tb"
+            android:layout_marginBottom="@dimen/margin_tb"
+            android:background="#ffffff">
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-
-            <RelativeLayout
+            <TextView
+                android:id="@+id/day_hint"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="3">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/city"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginBottom="5dp"
-                        android:layout_weight="1"
-                        android:shadowColor="@color/nightColor"
-                        android:shadowDx="@integer/shadow_dx"
-                        android:shadowDy="@integer/shadow_dy"
-                        android:shadowRadius="@integer/shadow_size_large"
-                        android:text="——"
-                        android:textColor="@color/dayColor"
-                        android:textSize="35sp" />
-
-                    <TextView
-                        android:id="@+id/status_now"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_gravity="center"
-                        android:layout_marginBottom="-13dp"
-                        android:shadowColor="@color/nightColor"
-                        android:shadowDx="@integer/shadow_dx"
-                        android:shadowDy="@integer/shadow_dy"
-                        android:shadowRadius="@integer/shadow_size_large"
-                        android:textSize="20sp"
-                        android:textColor="@color/dayColor"
-                        android:text="——" />
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content">
-                        <TextView
-                            android:id="@+id/temperature_now"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            android:shadowColor="@color/nightColor"
-                            android:shadowDx="@integer/shadow_dx"
-                            android:shadowDy="@integer/shadow_dy"
-                            android:shadowRadius="@integer/shadow_size_large"
-                            android:text="——"
-                            android:textColor="@color/dayColor"
-                            android:textSize="120sp" />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_toRightOf="@id/temperature_now"
-                            android:layout_alignTop="@id/temperature_now"
-                            android:shadowColor="@color/nightColor"
-                            android:shadowDx="@integer/shadow_dx"
-                            android:shadowDy="@integer/shadow_dy"
-                            android:shadowRadius="@integer/shadow_size_large"
-                            android:text="@string/degree"
-                            android:textColor="@color/dayColor"
-                            android:textSize="120sp"
-                            />
-                    </RelativeLayout>
-
-                </LinearLayout>
-            </RelativeLayout>
-
+                android:layout_marginLeft="@dimen/margin_lr"
+                android:layout_marginRight="@dimen/margin_lr"
+                android:shadowColor="@color/nightColor"
+                android:shadowDx="@integer/shadow_dx"
+                android:shadowDy="@integer/shadow_dy"
+                android:shadowRadius="@integer/shadow_size_small"
+                android:lineSpacingExtra="5dp"
+                android:textColor="@color/dayColor"
+                android:textSize="@dimen/info_size"
+                android:textStyle="bold"
+                android:text="——"/>
+            <!-- line -->
             <LinearLayout
-                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/line_height"
+                android:layout_marginBottom="@dimen/margin_tb"
+                android:layout_marginTop="@dimen/margin_tb"
+                android:background="#ffffff">
+            </LinearLayout>
+            <TextView
+                android:id="@+id/wind_vector"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="3">
-
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_marginLeft="@dimen/margin_lr"
-                    android:layout_marginRight="@dimen/margin_lr"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:id="@+id/day1_week"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="1"
-                        android:shadowColor="@color/nightColor"
-                        android:shadowDx="@integer/shadow_dx"
-                        android:shadowDy="@integer/shadow_dy"
-                        android:shadowRadius="@integer/shadow_size_small"
-                        android:textSize="@dimen/info_size"
-                        android:textColor="@color/dayColor"
-                        android:textStyle="bold"
-                        android:text="" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="1"
-                        android:shadowColor="@color/nightColor"
-                        android:shadowDx="@integer/shadow_dx"
-                        android:shadowDy="@integer/shadow_dy"
-                        android:shadowRadius="@integer/shadow_size_small"
-                        android:textSize="@dimen/info_size"
-                        android:textColor="@color/grayColor"
-                        android:textStyle="bold"
-                        android:text="@string/today" />
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="10"></LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/day1_day_temperature"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginRight="@dimen/margin_lr"
-                            android:text=""
-                            android:shadowColor="@color/nightColor"
-                            android:shadowDx="@integer/shadow_dx"
-                            android:shadowDy="@integer/shadow_dy"
-                            android:shadowRadius="@integer/shadow_size_small"
-                            android:textColor="@color/dayColor"
-                            android:textSize="@dimen/info_size"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/day1_night_temperature"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:shadowColor="@color/nightColor"
-                            android:shadowDx="@integer/shadow_dx"
-                            android:shadowDy="@integer/shadow_dy"
-                            android:shadowRadius="@integer/shadow_size_small"
-                            android:text=""
-                            android:textColor="@color/grayColor"
-                            android:textSize="@dimen/info_size"
-                            android:textStyle="bold" />
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
-                <!-- line -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/line_height"
-                    android:layout_marginTop="@dimen/margin_tb"
-                    android:background="#ffffff"/>
-
-                <ListView
-                    android:id="@+id/list_weather"
-                    android:layout_marginLeft="@dimen/margin_lr"
-                    android:layout_marginRight="@dimen/margin_lr"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:divider="@null"
-                    android:clickable="false"
-                    android:scrollbars="none"
-                    android:fadingEdge="none"/>
-
-                <!-- line -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/line_height"
-                    android:layout_marginTop="@dimen/margin_tb"
-                    android:layout_marginBottom="@dimen/margin_tb"
-                    android:background="#ffffff">
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-                    <TextView
-                        android:id="@+id/day_hint"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/margin_lr"
-                        android:layout_marginRight="@dimen/margin_lr"
-                        android:shadowColor="@color/nightColor"
-                        android:shadowDx="@integer/shadow_dx"
-                        android:shadowDy="@integer/shadow_dy"
-                        android:shadowRadius="@integer/shadow_size_small"
-                        android:lineSpacingExtra="5dp"
-                        android:textColor="@color/dayColor"
-                        android:textSize="@dimen/info_size"
-                        android:textStyle="bold"
-                        android:text="——"/>
-                    <!-- line -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/line_height"
-                        android:layout_marginBottom="@dimen/margin_tb"
-                        android:layout_marginTop="@dimen/margin_tb"
-                        android:background="#ffffff">
-                    </LinearLayout>
-                    <TextView
-                        android:id="@+id/wind_vector"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:shadowColor="@color/nightColor"
-                        android:shadowDx="@integer/shadow_dx"
-                        android:shadowDy="@integer/shadow_dy"
-                        android:shadowRadius="@integer/shadow_size_small"
-                        android:textColor="@color/dayColor"
-                        android:textSize="@dimen/info_size"
-                        android:textStyle="bold"
-                        android:text="风向：——"/>
-                    <TextView
-                        android:id="@+id/wind_speed"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:shadowColor="@color/nightColor"
-                        android:shadowDx="@integer/shadow_dx"
-                        android:shadowDy="@integer/shadow_dy"
-                        android:shadowRadius="@integer/shadow_size_small"
-                        android:textColor="@color/dayColor"
-                        android:textSize="@dimen/info_size"
-                        android:textStyle="bold"
-                        android:text="风速：——"/>
-                    <TextView
-                        android:id="@+id/dry_percont"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin_tb"
-                        android:gravity="center"
-                        android:shadowColor="@color/nightColor"
-                        android:shadowDx="@integer/shadow_dx"
-                        android:shadowDy="@integer/shadow_dy"
-                        android:shadowRadius="@integer/shadow_size_small"
-                        android:textColor="@color/dayColor"
-                        android:textSize="@dimen/info_size"
-                        android:textStyle="bold"
-                        android:text="湿度：——"/>
-                </LinearLayout>
-
-
-            </LinearLayout>
+                android:gravity="center"
+                android:shadowColor="@color/nightColor"
+                android:shadowDx="@integer/shadow_dx"
+                android:shadowDy="@integer/shadow_dy"
+                android:shadowRadius="@integer/shadow_size_small"
+                android:textColor="@color/dayColor"
+                android:textSize="@dimen/info_size"
+                android:textStyle="bold"
+                android:text="风向：——"/>
+            <TextView
+                android:id="@+id/wind_speed"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:shadowColor="@color/nightColor"
+                android:shadowDx="@integer/shadow_dx"
+                android:shadowDy="@integer/shadow_dy"
+                android:shadowRadius="@integer/shadow_size_small"
+                android:textColor="@color/dayColor"
+                android:textSize="@dimen/info_size"
+                android:textStyle="bold"
+                android:text="风速：——"/>
+            <TextView
+                android:id="@+id/dry_percont"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_tb"
+                android:gravity="center"
+                android:shadowColor="@color/nightColor"
+                android:shadowDx="@integer/shadow_dx"
+                android:shadowDy="@integer/shadow_dy"
+                android:shadowRadius="@integer/shadow_size_small"
+                android:textColor="@color/dayColor"
+                android:textSize="@dimen/info_size"
+                android:textStyle="bold"
+                android:text="湿度：——"/>
         </LinearLayout>
 
-    </FrameLayout>
 
-</RelativeLayout>
+    </LinearLayout>
+</LinearLayout>
+
+</FrameLayout>

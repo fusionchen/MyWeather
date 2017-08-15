@@ -23,6 +23,10 @@ public class NowWeather implements Serializable {
     private String infocode;
     private List<LivesBean> lives;
 
+    public NowWeather() {
+        lives = new ArrayList<>();
+    }
+
     public static NowWeather getDefaultInstance() {
         NowWeather nowWeather = new NowWeather();
         nowWeather.lives = new ArrayList<>();
