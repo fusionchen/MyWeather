@@ -64,4 +64,14 @@ public class CityNameCodeTool {
     public static ArrayList<String> getNames() {
         return names;
     }
+
+    public static void putCity(String cityname, String citycode) {
+        for(String name : names) {
+            if(name.equals(cityname))
+                return;
+        }
+        names.add(cityname);
+        codeMaps.put(citycode, cityname);
+        nameMaps.put(cityname, citycode);
+    }
 }

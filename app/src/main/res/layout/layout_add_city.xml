@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/add_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/item_manage_city_height"
+        android:layout_marginLeft="@dimen/margin_lr"
+        android:layout_marginRight="@dimen/margin_lr">
+
+        <com.victor.loading.rotate.RotateLoading
+            android:id="@+id/loading"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            app:loading_width="2dp" />
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal" />
+
+        <ImageButton
+            android:id="@+id/add_city"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:background="@drawable/selector_add" />
+    </LinearLayout>
+</LinearLayout>

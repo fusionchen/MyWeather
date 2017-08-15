@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
 
@@ -25,6 +26,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import me.myweather.app.R;
+import me.myweather.app.View.ScrollListView;
 import me.myweather.app.adapter.CityAdapter;
 import me.myweather.app.been.CityCodes;
 import me.myweather.app.been.NowWeather;
@@ -47,6 +49,7 @@ public class ManageCityActivity extends AppCompatActivity {
     MaterialSearchBar searchBar;
     View searchLayout;
     View returnView;
+    View addView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,8 +79,13 @@ public class ManageCityActivity extends AppCompatActivity {
         searchBar.setSuggstionsClickListener(new SuggestionsAdapter.OnItemViewClickListener() {
             @Override
             public void OnItemClickListener(int i, View view) {
+                if(citynames.isEmpty()) {
+                    searchBar.updateLastSuggestions(new ArrayList<String>());
+                    return;
+                }
                 returnView.callOnClick();
                 addCity(citynames.get(i));
+                searchBar.getLastSuggestions().clear();
             }
 
             @Override
@@ -96,6 +104,8 @@ public class ManageCityActivity extends AppCompatActivity {
         //init list view
         listView = (SwipeMenuListView) findViewById(R.id.city_list);
         SwipeMenuCreator creator = menu -> {
+            if(menu.getViewType() == 0)
+                return;
             // create "delete" item
             SwipeMenuItem deleteItem = new SwipeMenuItem(
                     getApplicationContext());
@@ -126,10 +136,17 @@ public class ManageCityActivity extends AppCompatActivity {
             Intent i = new Intent();
             i.putExtra(MainActivity.KEY_POS + "", position);
             setResult(MainActivity.KEY_POS, i);
+            cityCodes.saveCityCodes();
             finish();
         });
-        loading = (RotateLoading) findViewById(R.id.loading);
-        ibAddCity = (ImageButton) findViewById(R.id.add_city);
+        initAddView();
+        listView.addFooterView(addView);
+    }
+
+    private void initAddView() {
+        addView = LayoutInflater.from(this).inflate(R.layout.layout_add_city, null);
+        loading = (RotateLoading) addView.findViewById(R.id.loading);
+        ibAddCity = (ImageButton) addView.findViewById(R.id.add_city);
         ibAddCity.setOnClickListener((view) -> {
             searchLayout.setVisibility(View.VISIBLE);
         });

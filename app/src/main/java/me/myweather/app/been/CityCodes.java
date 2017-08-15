@@ -51,10 +51,12 @@ public class CityCodes extends ArrayList<String> {
         super.add(element);
         return true;
     }
-    public void loadCityCodes() {
+    public int loadCityCodes() {
+        int nowSize = size();
         String jCityCodes = PreferenceTool.load(KEY_CITY_CODES, null);
         if(jCityCodes != null)
             this.setCityCodesByJson(jCityCodes);
+        return size() - nowSize;
     }
     public void saveCityCodes() {
         PreferenceTool.save(KEY_CITY_CODES, getCityCodesString());

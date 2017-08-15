@@ -8,9 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.TreeSet;
 
 import me.myweather.app.R;
 import me.myweather.app.been.WeatherMessage;
@@ -53,27 +51,27 @@ public class WeatherMessageAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        WeatherTag weatherTag = null;
+        ViewHolder viewHolder = null;
         WeatherMessage.ForecastsBean.CastsBean weather = weathers.get(position);
         if(convertView == null) {
-            weatherTag = new WeatherTag();
+            viewHolder = new ViewHolder();
             convertView = layoutInflater.inflate(R.layout.item_day_info, null);
-            weatherTag.tvWeek = (TextView) convertView.findViewById(R.id.week);
-            weatherTag.tvDayTemperature = (TextView) convertView.findViewById(R.id.day_temperature);
-            weatherTag.tvNightTemperature = (TextView) convertView.findViewById(R.id.night_temperature);
-            weatherTag.ivIcon = (ImageView) convertView.findViewById(R.id.icon);
-            convertView.setTag(weatherTag);
+            viewHolder.tvWeek = (TextView) convertView.findViewById(R.id.week);
+            viewHolder.tvDayTemperature = (TextView) convertView.findViewById(R.id.day_temperature);
+            viewHolder.tvNightTemperature = (TextView) convertView.findViewById(R.id.night_temperature);
+            viewHolder.ivIcon = (ImageView) convertView.findViewById(R.id.icon);
+            convertView.setTag(viewHolder);
         } else {
-            weatherTag = (WeatherTag) convertView.getTag();
+            viewHolder = (ViewHolder) convertView.getTag();
         }
-        weatherTag.tvWeek.setText(NumberWeekTool.getWeekByNumber(weather.getWeek()));
-        weatherTag.tvDayTemperature.setText(weather.getDaytemp());
-        weatherTag.tvNightTemperature.setText(weather.getNighttemp());
-        weatherTag.ivIcon.setBackgroundResource(WeatherIconFactory.getDayResource(weather.getDayweather()));
+        viewHolder.tvWeek.setText(NumberWeekTool.getWeekByNumber(weather.getWeek()));
+        viewHolder.tvDayTemperature.setText(weather.getDaytemp());
+        viewHolder.tvNightTemperature.setText(weather.getNighttemp());
+        viewHolder.ivIcon.setBackgroundResource(WeatherIconFactory.getDayResource(weather.getDayweather()));
         return convertView;
     }
 
-    final class WeatherTag {
+    final class ViewHolder {
         public TextView tvWeek;
         public ImageView ivIcon;
         public TextView tvDayTemperature;

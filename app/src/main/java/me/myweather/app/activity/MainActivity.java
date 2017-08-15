@@ -13,11 +13,9 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.google.gson.reflect.TypeToken;
 import com.victor.loading.rotate.RotateLoading;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.util.HashMap;
 
 import me.myweather.app.R;
@@ -27,6 +25,7 @@ import me.myweather.app.been.NowWeather;
 import me.myweather.app.been.WeatherMessage;
 import me.myweather.app.fragment.MainFragment;
 import me.myweather.app.tool.CityNameCodeTool;
+import me.myweather.app.tool.LocationTool;
 import me.myweather.app.tool.PreferenceTool;
 import me.myweather.app.tool.WeatherURLTool;
 import me.myweather.app.tool.HttpTool;
@@ -107,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        //initLocation();
         initCity();
         initWeather();
     }
@@ -122,34 +122,54 @@ public class MainActivity extends AppCompatActivity {
         rotateLoading = (RotateLoading) findViewById(R.id.loading);
         PreferenceTool.init(this);
         CityNameCodeTool.init(this);
+        initViewPager();
+    }
+
+    private void initLocation() {
+        LocationTool locationTool = LocationTool.getInstance(this, (citycode, cityname) -> {
+            cityCodes.set(0, citycode);
+            try {
+                Thread.sleep(300);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            while(sendFlag);
+            runOnUiThread(()->{
+                Toast.makeText(this, "定位成功：" + cityname, Toast.LENGTH_SHORT).show();
+                sendGetWeather();
+            });
+        });
+        locationTool.location();
     }
 
     private void initCity() {
         cityCodes.loadCityCodes();
-        if(mSectionsPagerAdapter != null)
-            mSectionsPagerAdapter.notifyDataSetChanged();
     }
 
     private void initWeather() {
         sendGetWeather();
     }
 
-    private void createViewPager() {
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
+    private void initViewPager() {
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        mSectionsPagerAdapter.notifyDataSetChanged();
         circleIndicator = (CircleIndicator) findViewById(R.id.indicator);
-        // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
-        mViewPager.setOffscreenPageLimit(3);
+        mViewPager.setOffscreenPageLimit(5);
+        circleIndicator.setViewPager(mViewPager);
+
+    }
+
+    private void refreshViewPager() {
+        if(getSupportFragmentManager().getFragments() != null)
+            getSupportFragmentManager().getFragments().clear();
+        mSectionsPagerAdapter.notifyDataSetChanged();
         circleIndicator.setViewPager(mViewPager);
     }
 
     private void sendGetWeather() {
         if(cityCodes.isEmpty()) {
-            createViewPager();
+            refreshViewPager();
             return;
         }
         if(sendFlag)
@@ -160,6 +180,8 @@ public class MainActivity extends AppCompatActivity {
         rotateLoading.start();
         refreshTimes = 0;
         lockSendFlag();
+        weatherMessageHashMap.clear();
+        nowWeatherHashMap.clear();
         for(String cityCode : cityCodes) {
             sendGetWeatherMessage(cityCode);
             sendGetNowWeather(cityCode);
@@ -220,11 +242,12 @@ public class MainActivity extends AppCompatActivity {
         try {
             Thread.sleep(1000);
             runOnUiThread(()->{
-                createViewPager();
+                mSectionsPagerAdapter.notifyDataSetChanged();
+                refreshViewPager();
                 setCurrentPage(currentPage);
                 unlockSendFlag();
                 rotateLoading.stop();
-                Toast.makeText(MainActivity.this, "天气信息获取成功！", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MainActivity.this, "天气信息获取成功！", Toast.LENGTH_SHORT).show();
             });
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -240,9 +263,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setCurrentPage(int pos) {
-        //然后调用下面的函数刷新数据
-        mSectionsPagerAdapter.notifyDataSetChanged();
-        //再调用setCurrentItem()函数设置一次
         mViewPager.setCurrentItem(pos);
     }
     /**
@@ -251,6 +271,7 @@ public class MainActivity extends AppCompatActivity {
      */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
+        private int count = 0;
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
         }
@@ -267,7 +288,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return cityCodes.size();
+            return count;
         }
 
         @Override
@@ -275,5 +296,15 @@ public class MainActivity extends AppCompatActivity {
                return null;
         }
 
+        @Override
+        public int getItemPosition(Object object) {
+            return POSITION_NONE;
+        }
+
+        @Override
+        public void notifyDataSetChanged() {
+            super.notifyDataSetChanged();
+            count = cityCodes.size();
+        }
     }
 }

@@ -5,13 +5,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -58,39 +56,42 @@ public class CityAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Tag tag = null;
+        ViewHolder viewHolder = null;
         String citycode = cityCodes.get(position);
         String cityname = CityNameCodeTool.code2name(citycode);
-
         if(convertView == null) {
-            tag = new Tag();
+            viewHolder = new ViewHolder();
             convertView = LayoutInflater.from(context).inflate(R.layout.item_manage_city, null);
-            tag.ivBG = (ImageView) convertView.findViewById(R.id.bg);
-            tag.tvCity = (TextView) convertView.findViewById(R.id.city);
-            tag.tvTime = (TextView) convertView.findViewById(R.id.time);
-            tag.tvTemperature = (TextView) convertView.findViewById(R.id.temperature);
-            convertView.setTag(tag);
+            viewHolder.ivBG = (ImageView) convertView.findViewById(R.id.bg);
+            viewHolder.tvCity = (TextView) convertView.findViewById(R.id.city);
+            viewHolder.tvTime = (TextView) convertView.findViewById(R.id.time);
+            viewHolder.tvTemperature = (TextView) convertView.findViewById(R.id.temperature);
+            viewHolder.ivLocation = (ImageView) convertView.findViewById(R.id.location);
+            convertView.setTag(viewHolder);
         } else {
-            tag = (Tag) convertView.getTag();
+            viewHolder = (ViewHolder) convertView.getTag();
         }
-        tag.tvCity.setText(cityname);
+        if(position == 0)
+            viewHolder.ivLocation.setVisibility(View.VISIBLE);
+        viewHolder.tvCity.setText(cityname);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm");
-        tag.tvTime.setText(simpleDateFormat.format(new Date()));
+        viewHolder.tvTime.setText(simpleDateFormat.format(new Date()));
         int bgID = R.drawable.launch_image;
         if(nowWeatherHashMap.get(citycode) != null && !nowWeatherHashMap.get(citycode).isNull()) {
             NowWeather.LivesBean livesBean = nowWeatherHashMap.get(citycode).getLives().get(0);
-            tag.tvTemperature.setText(livesBean.getTemperature() + "°");
-            //bgID = WeatherBackgroundFactory.getResource(livesBean.getWeather());
+            viewHolder.tvTemperature.setText(livesBean.getTemperature() + "°");
+            bgID = WeatherBackgroundFactory.getResource(livesBean.getWeather());
         }
-        tag.ivBG.setImageResource(bgID);
+        viewHolder.ivBG.setImageResource(bgID);
         return convertView;
     }
 
-    class Tag {
+    class ViewHolder {
         ImageView ivBG;
         TextView tvTime;
         TextView tvCity;
         TextView tvTemperature;
+        ImageView ivLocation;
     }
 
     public void addItem(String citycode, NowWeather nowWeather) {
@@ -103,5 +104,20 @@ public class CityAdapter extends BaseAdapter {
         nowWeatherHashMap.remove(cityCodes.get(pos));
         cityCodes.remove(pos);
         notifyDataSetChanged();
+    }
+
+    @Override
+    public int getViewTypeCount() {
+        // menu type count
+        return 2;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        // current menu type
+        if(position == 0)
+            return 0;
+        else
+            return 1;
     }
 }

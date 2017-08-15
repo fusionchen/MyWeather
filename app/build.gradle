@@ -43,6 +43,8 @@ dependencies {
     compile 'me.relex:circleindicator:1.2.2@aar'
     compile 'xyz.sahildave:searchviewlayout:0.6'
     compile 'com.github.mancj:MaterialSearchBar:0.7.1'
+    compile 'com.amap.api:search:latest.integration'
+    compile 'com.amap.api:location:latest.integration'
     testCompile 'junit:junit:4.12'
 }
 
