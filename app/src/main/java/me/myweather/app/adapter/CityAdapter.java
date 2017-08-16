@@ -1,6 +1,7 @@
 package me.myweather.app.adapter;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import me.myweather.app.been.NowWeather;
 import me.myweather.app.factory.WeatherBackgroundFactory;
 import me.myweather.app.tool.CityNameCodeTool;
 import me.myweather.app.tool.JsonTool;
+import me.myweather.app.tool.PicTool;
 
 /**
  * Created by admin on 2017/8/14.
@@ -82,7 +84,8 @@ public class CityAdapter extends BaseAdapter {
             viewHolder.tvTemperature.setText(livesBean.getTemperature() + "°");
             bgID = WeatherBackgroundFactory.getResource(livesBean.getWeather());
         }
-        viewHolder.ivBG.setImageResource(bgID);
+        Drawable dBG = PicTool.cutImage(bgID, 0, 0, PicTool.getScreenWidth(), context.getResources().getDimensionPixelSize(R.dimen.item_manage_city_height));
+        viewHolder.ivBG.setBackground(dBG);
         return convertView;
     }
 

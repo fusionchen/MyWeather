@@ -24,9 +24,6 @@
     <uses-permission android:name="android.permission.BLUETOOTH"></uses-permission>
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"></uses-permission>
 
-    <meta-data android:name="com.amap.api.v2.apikey" android:value="key">
-        0d59d944cff6f4b0ddc37c21567b3c03
-    </meta-data>
 
     <application
         android:allowBackup="true"
@@ -47,6 +44,9 @@
         <activity android:name=".activity.ManageCityActivity" />
 
         <service android:name="com.amap.api.location.APSService"></service>
+
+
+        <meta-data android:name="com.amap.api.v2.apikey" android:value="0edc3ca4cf35d3ea0c9e092fa32d35a8"> </meta-data>
     </application>
 
 </manifest>

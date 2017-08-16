@@ -9,7 +9,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
-import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -26,6 +25,7 @@ import me.myweather.app.been.WeatherMessage;
 import me.myweather.app.fragment.MainFragment;
 import me.myweather.app.tool.CityNameCodeTool;
 import me.myweather.app.tool.LocationTool;
+import me.myweather.app.tool.PicTool;
 import me.myweather.app.tool.PreferenceTool;
 import me.myweather.app.tool.WeatherURLTool;
 import me.myweather.app.tool.HttpTool;
@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
     private HashMap<String, String> weatherMessageHashMap = new HashMap<>();
     private HashMap<String, String> nowWeatherHashMap = new HashMap<>();
     private int refreshTimes = 0;
-    private boolean sendFlag = false;
+    private boolean isSending = false;
     private boolean pageFlag = false;
     private static Context context;
     @Override
@@ -81,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
             if(rotateLoading.isStart()){
                 rotateLoading.stop();
                 HttpTool.disconnectAll();
+                isSending = false;
                 return;
             }
             sendGetWeather();
@@ -106,9 +107,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        //initLocation();
+        initLocation();
         initCity();
-        initWeather();
     }
 
     @Override
@@ -122,20 +122,17 @@ public class MainActivity extends AppCompatActivity {
         rotateLoading = (RotateLoading) findViewById(R.id.loading);
         PreferenceTool.init(this);
         CityNameCodeTool.init(this);
+        PicTool.init(this);
         initViewPager();
     }
 
     private void initLocation() {
+        rotateLoading.start();
         LocationTool locationTool = LocationTool.getInstance(this, (citycode, cityname) -> {
             cityCodes.set(0, citycode);
-            try {
-                Thread.sleep(300);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            while(sendFlag);
+            cityCodes.saveCityCodes();
             runOnUiThread(()->{
-                Toast.makeText(this, "定位成功：" + cityname, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "定位成功：" + cityname, Toast.LENGTH_SHORT).show();
                 sendGetWeather();
             });
         });
@@ -172,7 +169,7 @@ public class MainActivity extends AppCompatActivity {
             refreshViewPager();
             return;
         }
-        if(sendFlag)
+        if(isSending)
             return;
         if(mViewPager != null && pageFlag == false)
             currentPage = mViewPager.getCurrentItem();
@@ -255,11 +252,11 @@ public class MainActivity extends AppCompatActivity {
     }
     
     public void lockSendFlag() {
-        sendFlag = true;
+        isSending = true;
     }
     
     public void unlockSendFlag() {
-        sendFlag = false;
+        isSending = false;
     }
 
     public void setCurrentPage(int pos) {

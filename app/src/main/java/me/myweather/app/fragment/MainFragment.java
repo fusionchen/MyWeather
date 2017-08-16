@@ -1,5 +1,6 @@
 package me.myweather.app.fragment;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -18,6 +19,7 @@ import me.myweather.app.factory.WeatherBackgroundFactory;
 import me.myweather.app.tool.CityNameCodeTool;
 import me.myweather.app.tool.DayHintTool;
 import me.myweather.app.tool.NumberWeekTool;
+import me.myweather.app.tool.PicTool;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -52,6 +54,7 @@ public class MainFragment extends Fragment {
     private TextView tvWindSpeed;
     private TextView tvHumidity;
     private ImageView ivBG;
+    private ImageView ivLocation;
 
 
     public MainFragment() {
@@ -129,7 +132,10 @@ public class MainFragment extends Fragment {
             tvWindSpeed = (TextView) rootView.findViewById(R.id.wind_speed);
             tvHumidity = (TextView) rootView.findViewById(R.id.dry_percont);
             ivBG = (ImageView) rootView.findViewById(R.id.bg);
+            ivLocation = (ImageView) rootView.findViewById(R.id.location);
 
+            if(selectionNumber != 1)
+                ivLocation.setVisibility(View.GONE);
             tvStatusNow.setText(nowWeatherLive.getWeather());
             tvTemperatureNow.setText(nowWeatherLive.getTemperature());
             tvDay1Week.setText(NumberWeekTool.getWeekByNumber(day1Weather.getWeek()));
@@ -140,11 +146,14 @@ public class MainFragment extends Fragment {
             tvWindVector.setText(DayHintTool.getWindVector(nowWeatherLive.getWinddirection()));
             tvWindSpeed.setText(DayHintTool.getWindSpeed(nowWeatherLive.getWindpower()));
             tvHumidity.setText(DayHintTool.getHumidity(nowWeatherLive.getHumidity()));
+            int bgID = R.drawable.launch_image;
             try {
-                ivBG.setBackgroundResource(WeatherBackgroundFactory.getResource(nowWeatherLive.getWeather()));
+                bgID = WeatherBackgroundFactory.getResource(nowWeatherLive.getWeather());
             }catch (Exception e) {
                 e.printStackTrace();
             }
+            Drawable drawable = PicTool.cutImage(bgID, 0, 0, PicTool.getScreenWidth(), PicTool.getScreenHeight());
+            ivBG.setBackground(drawable);
             lvWeather = (ListView) rootView.findViewById(R.id.list_weather);
             lvWeather.setAdapter(new WeatherMessageAdapter(this.getContext(), weatherMessage));
         }

@@ -5,18 +5,15 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
 
-import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
-import com.google.gson.reflect.TypeToken;
 import com.mancj.materialsearchbar.MaterialSearchBar;
 import com.mancj.materialsearchbar.adapter.SuggestionsAdapter;
 import com.victor.loading.rotate.RotateLoading;
@@ -26,7 +23,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import me.myweather.app.R;
-import me.myweather.app.View.ScrollListView;
 import me.myweather.app.adapter.CityAdapter;
 import me.myweather.app.been.CityCodes;
 import me.myweather.app.been.NowWeather;
@@ -35,7 +31,8 @@ import me.myweather.app.tool.HttpTool;
 import me.myweather.app.tool.JsonTool;
 import me.myweather.app.tool.WeatherURLTool;
 import okhttp3.Call;
-import xyz.sahildave.widget.SearchViewLayout;
+
+import static me.myweather.app.tool.PicTool.dp2px;
 
 public class ManageCityActivity extends AppCompatActivity {
 
@@ -113,10 +110,10 @@ public class ManageCityActivity extends AppCompatActivity {
             deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,
                     0x3F, 0x25)));
             // set item width
-            deleteItem.setWidth(dp2px(90));
+            deleteItem.setWidth(dp2px(this, 90));
             deleteItem.setTitle("删除");
             deleteItem.setTitleColor(Color.WHITE);
-            deleteItem.setTitleSize(dp2px(20));
+            deleteItem.setTitleSize(dp2px(this, 12));
             // add to menu
             menu.addMenuItem(deleteItem);
         };
@@ -152,10 +149,7 @@ public class ManageCityActivity extends AppCompatActivity {
         });
     }
 
-    private int dp2px(int dp) {
-        float scale = getResources().getDisplayMetrics().density;
-        return (int) (dp * scale + 0.5f);
-    }
+
 
     private void addCity(String cityname) {
         String citycode = CityNameCodeTool.name2code(cityname);
