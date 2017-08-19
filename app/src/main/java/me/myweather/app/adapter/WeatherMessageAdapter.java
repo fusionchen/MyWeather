@@ -24,13 +24,11 @@ public class WeatherMessageAdapter extends BaseAdapter {
     WeatherMessage weatherMessage;
     List<WeatherMessage.ForecastsBean.CastsBean> weathers;
     private LayoutInflater layoutInflater;
-    private  Context context;
 
     public WeatherMessageAdapter(Context context, WeatherMessage weatherMessage) {
         this.weatherMessage = weatherMessage;
         this.weathers = weatherMessage.getForecasts().get(0).getCasts();
         this.weathers.remove(0);
-        this.context = context;
         this.layoutInflater = LayoutInflater.from(context);
     }
 

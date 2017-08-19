@@ -50,11 +50,10 @@ public class MainActivity extends AppCompatActivity {
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
-    private ImageButton manageCityButton;
+    private ImageButton ibImageCity;
     private RotateLoading rotateLoading;
     private CircleIndicator circleIndicator;
 
-    private HttpTool refreshTool;
     private CityCodes cityCodes = new CityCodes();
     private int currentPage = 0;
     private HashMap<String, String> weatherMessageHashMap = new HashMap<>();
@@ -62,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
     private int refreshTimes = 0;
     private boolean isSending = false;
     private boolean pageFlag = false;
-    private static Context context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,8 +69,8 @@ public class MainActivity extends AppCompatActivity {
         //my init actions
         init();
 
-        manageCityButton = (ImageButton) findViewById(R.id.button_manage_city);
-        manageCityButton.setOnClickListener((view) -> {
+        ibImageCity = (ImageButton) findViewById(R.id.button_manage_city);
+        ibImageCity.setOnClickListener((view) -> {
             Intent i = new Intent();
             i.putExtra(JsonTool.KEY_NOW_WEATHER, nowWeatherHashMap);
             i.setClass(this, ManageCityActivity.class);
@@ -141,10 +140,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void initCity() {
         cityCodes.loadCityCodes();
-    }
-
-    private void initWeather() {
-        sendGetWeather();
     }
 
     private void initViewPager() {
