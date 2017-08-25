@@ -2,6 +2,7 @@ package me.myweather.app.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 
 import android.support.v4.app.Fragment;
@@ -16,6 +17,8 @@ import com.victor.loading.rotate.RotateLoading;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import me.myweather.app.R;
 import me.myweather.app.tool.JsonTool;
@@ -215,7 +218,7 @@ public class MainActivity extends AppCompatActivity {
                 runOnUiThread(() -> {
                     unlockSendFlag();
                     rotateLoading.stop();
-                    Toast.makeText(MainActivity.this, "天气信息获取失败…", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "连接超时，天气信息获取失败…", Toast.LENGTH_SHORT).show();
                 });
             }
 
@@ -234,14 +237,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void refreshSuccess() {
-        runOnUiThread(()->{
-            mSectionsPagerAdapter.notifyDataSetChanged();
-            refreshViewPager();
-            setCurrentPage(currentPage);
-            unlockSendFlag();
-            rotateLoading.stop();
-            //Toast.makeText(MainActivity.this, "天气信息获取成功！", Toast.LENGTH_SHORT).show();
-        });
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(()->{
+                    mSectionsPagerAdapter.notifyDataSetChanged();
+                    refreshViewPager();
+                    setCurrentPage(currentPage);
+                    unlockSendFlag();
+                    rotateLoading.stop();
+                    //Toast.makeText(MainActivity.this, "天气信息获取成功！", Toast.LENGTH_SHORT).show();
+                });
+            }
+        }, 2000);
     }
 
     public void lockSendFlag() {

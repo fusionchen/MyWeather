@@ -1,6 +1,7 @@
 package me.myweather.app.tool;
 
 import android.content.Context;
+import android.os.CountDownTimer;
 
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
@@ -16,11 +17,12 @@ public class LocationTool {
     //声明AMapLocationClientOption对象
     public AMapLocationClientOption mLocationOption = null;
     CitycodeListener citycodeListener;
+    boolean hasReturn = false;
 
     private LocationTool() {
         mLocationOption = new AMapLocationClientOption();
         mLocationOption.setOnceLocation(true);
-        mLocationOption.setHttpTimeOut(10000);
+        mLocationOption.setHttpTimeOut(20000);
         mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
     }
 
@@ -29,7 +31,8 @@ public class LocationTool {
         locationTool.mLocationClient = new AMapLocationClient(context);
         locationTool.citycodeListener = citycodeListener;
         locationTool.mLocationClient.setLocationListener(aMapLocation -> {
-            if(aMapLocation.getErrorCode() == 0) {
+            locationTool.hasReturn = true;
+            if(aMapLocation != null && aMapLocation.getErrorCode() == 0) {
                 String citycode = aMapLocation.getAdCode();
                 String cityname = aMapLocation.getCity();
                 CityNameCodeTool.putCity(cityname, citycode);
@@ -37,6 +40,7 @@ public class LocationTool {
             } else {
                 citycodeListener.onResult(null, null);
             }
+            locationTool.destory();
         });
         locationTool.mLocationClient.setLocationOption(locationTool.mLocationOption);
         return locationTool;
@@ -47,7 +51,22 @@ public class LocationTool {
     }
 
     public void location() {
+        hasReturn = false;
         mLocationClient.startLocation();
+        CountDownTimer countDownTimer = new CountDownTimer(5000, 5000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+
+            }
+
+            @Override
+            public void onFinish() {
+                if(hasReturn == true)
+                    return;
+                citycodeListener.onResult(null, null);
+                destory();
+            }
+        }.start();
     }
 
     public void stopLoaction() {
