@@ -56,6 +56,8 @@ public class CityCodes extends ArrayList<String> {
         String jCityCodes = PreferenceTool.load(KEY_CITY_CODES, null);
         if(jCityCodes != null)
             this.setCityCodesByJson(jCityCodes);
+        if(this.isEmpty())
+            this.add("");
         return size() - nowSize;
     }
     public void saveCityCodes() {

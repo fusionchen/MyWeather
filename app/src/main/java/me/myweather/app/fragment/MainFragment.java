@@ -111,17 +111,7 @@ public class MainFragment extends Fragment {
             NowWeather nowWeather = NowWeather.getDefaultInstance();
             tvCity = (TextView) rootView.findViewById(R.id.city);
             tvCity.setText(CityNameCodeTool.code2name(citycode));
-            try {
-                weatherMessage = JsonTool.getInstance(strings[0], WeatherMessage.class);
-                nowWeather = JsonTool.getInstance(strings[1], NowWeather.class);
-                if (weatherMessage.isNull() || nowWeather.isNull())
-                    return;
-            } catch (Exception e) {
-                //e.printStackTrace();
-                return;
-            }
-            WeatherMessage.ForecastsBean.CastsBean day1Weather = weatherMessage.getForecasts().get(0).getCasts().get(0);
-            NowWeather.LivesBean nowWeatherLive = nowWeather.getLives().get(0);
+
             tvStatusNow = (TextView)rootView.findViewById(R.id.status_now);
             tvTemperatureNow = (TextView) rootView.findViewById(R.id.temperature_now);
             tvDay1Week = (TextView)rootView.findViewById(R.id.day1_week);
@@ -133,9 +123,22 @@ public class MainFragment extends Fragment {
             tvHumidity = (TextView) rootView.findViewById(R.id.dry_percont);
             ivBG = (ImageView) rootView.findViewById(R.id.bg);
             ivLocation = (ImageView) rootView.findViewById(R.id.location);
+            try {
+                weatherMessage = JsonTool.getInstance(strings[0], WeatherMessage.class);
+                nowWeather = JsonTool.getInstance(strings[1], NowWeather.class);
+                if (weatherMessage.isNull() || nowWeather.isNull())
+                    return;
+            } catch (Exception e) {
+                //e.printStackTrace();
+                return;
+            } finally {
+                if(selectionNumber != 1)
+                    ivLocation.setVisibility(View.GONE);
+            }
+            WeatherMessage.ForecastsBean.CastsBean day1Weather = weatherMessage.getForecasts().get(0).getCasts().get(0);
+            NowWeather.LivesBean nowWeatherLive = nowWeather.getLives().get(0);
 
-            if(selectionNumber != 1)
-                ivLocation.setVisibility(View.GONE);
+
             tvStatusNow.setText(nowWeatherLive.getWeather());
             tvTemperatureNow.setText(nowWeatherLive.getTemperature());
             tvDay1Week.setText(NumberWeekTool.getWeekByNumber(day1Weather.getWeek()));

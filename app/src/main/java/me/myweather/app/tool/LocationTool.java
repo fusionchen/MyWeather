@@ -19,8 +19,8 @@ public class LocationTool {
 
     private LocationTool() {
         mLocationOption = new AMapLocationClientOption();
-        mLocationOption = new AMapLocationClientOption();
-        mLocationOption.setOnceLocationLatest(true);
+        mLocationOption.setOnceLocation(true);
+        mLocationOption.setHttpTimeOut(5000);
         mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
     }
 
@@ -29,10 +29,14 @@ public class LocationTool {
         locationTool.mLocationClient = new AMapLocationClient(context);
         locationTool.citycodeListener = citycodeListener;
         locationTool.mLocationClient.setLocationListener(aMapLocation -> {
-            String citycode = aMapLocation.getAdCode();
-            String cityname = aMapLocation.getCity();
-            CityNameCodeTool.putCity(cityname, citycode);
-            citycodeListener.onResult(citycode, cityname);
+            if(aMapLocation.getErrorCode() == 0) {
+                String citycode = aMapLocation.getAdCode();
+                String cityname = aMapLocation.getCity();
+                CityNameCodeTool.putCity(cityname, citycode);
+                citycodeListener.onResult(citycode, cityname);
+            } else {
+                citycodeListener.onResult(null, null);
+            }
         });
         locationTool.mLocationClient.setLocationOption(locationTool.mLocationOption);
         return locationTool;

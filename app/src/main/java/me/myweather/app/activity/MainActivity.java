@@ -83,13 +83,15 @@ public class MainActivity extends AppCompatActivity {
                 isSending = false;
                 return;
             }
-            sendGetWeather();
+            initLocation();
         });
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        initCity();
+        refreshViewPager();
         switch (requestCode) {
             case KEY_POS:
                 if(data == null)
@@ -106,8 +108,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        initLocation();
         initCity();
+        initLocation();
     }
 
     @Override
@@ -128,8 +130,12 @@ public class MainActivity extends AppCompatActivity {
     private void initLocation() {
         rotateLoading.start();
         LocationTool locationTool = LocationTool.getInstance(this, (citycode, cityname) -> {
-            cityCodes.set(0, citycode);
-            cityCodes.saveCityCodes();
+            if(citycode != null) {
+                cityCodes.set(0, citycode);
+                cityCodes.saveCityCodes();
+            } else {
+                Toast.makeText(this, "定位失败" , Toast.LENGTH_SHORT).show();
+            }
             runOnUiThread(()->{
                 //Toast.makeText(this, "定位成功：" + cityname, Toast.LENGTH_SHORT).show();
                 sendGetWeather();
@@ -187,7 +193,7 @@ public class MainActivity extends AppCompatActivity {
                 runOnUiThread(() -> {
                     unlockSendFlag();
                     rotateLoading.stop();
-                    Toast.makeText(MainActivity.this, "天气信息获取失败…", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "连接超时，天气信息获取失败…", Toast.LENGTH_SHORT).show();
                 });
             }
 
@@ -232,7 +238,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void refreshSuccess() {
         try {
-            Thread.sleep(1000);
+            Thread.sleep(400);
             runOnUiThread(()->{
                 mSectionsPagerAdapter.notifyDataSetChanged();
                 refreshViewPager();
@@ -245,7 +251,7 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-    
+
     public void lockSendFlag() {
         isSending = true;
     }
@@ -295,8 +301,8 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void notifyDataSetChanged() {
-            super.notifyDataSetChanged();
             count = cityCodes.size();
+            super.notifyDataSetChanged();
         }
     }
 }

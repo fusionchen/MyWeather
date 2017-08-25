@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -21,7 +22,10 @@ public class HttpTool {
     private OkHttpClient client;
     private HttpTool.Callback callback;
     public HttpTool(){
-        client = new OkHttpClient();
+        client = new OkHttpClient.Builder()
+                .connectTimeout(3, TimeUnit.SECONDS)
+                .readTimeout(5, TimeUnit.SECONDS)
+                .build();
     }
     public static HttpTool getInstance(HttpTool.Callback callback) {
         HttpTool httpTool = new HttpTool();
