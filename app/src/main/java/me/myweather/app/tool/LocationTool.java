@@ -20,7 +20,7 @@ public class LocationTool {
     private LocationTool() {
         mLocationOption = new AMapLocationClientOption();
         mLocationOption.setOnceLocation(true);
-        mLocationOption.setHttpTimeOut(5000);
+        mLocationOption.setHttpTimeOut(10000);
         mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
     }
 

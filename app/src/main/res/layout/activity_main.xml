@@ -30,13 +30,27 @@
                 android:layout_alignParentBottom="true"
                 android:orientation="horizontal">
 
-                <com.victor.loading.rotate.RotateLoading
-                    android:id="@+id/loading"
+                <FrameLayout
                     android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    app:loading_width="2dp"
+                    android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/margin_lr"
-                    android:layout_marginTop="5dp"/>
+                    android:layout_height="40dp">
+
+                    <ImageView
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:alpha="0.6"
+                        android:layout_gravity="center"
+                        android:background="@drawable/icon_point"/>
+
+                    <com.victor.loading.rotate.RotateLoading
+                        android:id="@+id/loading"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        app:loading_width="2dp"/>
+
+
+                </FrameLayout>
 
                 <me.relex.circleindicator.CircleIndicator
                     android:id="@+id/indicator"

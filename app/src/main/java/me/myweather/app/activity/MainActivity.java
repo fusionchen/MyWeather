@@ -136,10 +136,7 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 Toast.makeText(this, "定位失败" , Toast.LENGTH_SHORT).show();
             }
-            runOnUiThread(()->{
-                //Toast.makeText(this, "定位成功：" + cityname, Toast.LENGTH_SHORT).show();
-                sendGetWeather();
-            });
+            sendGetWeather();
         });
         locationTool.location();
     }
@@ -237,19 +234,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void refreshSuccess() {
-        try {
-            Thread.sleep(400);
-            runOnUiThread(()->{
-                mSectionsPagerAdapter.notifyDataSetChanged();
-                refreshViewPager();
-                setCurrentPage(currentPage);
-                unlockSendFlag();
-                rotateLoading.stop();
-                //Toast.makeText(MainActivity.this, "天气信息获取成功！", Toast.LENGTH_SHORT).show();
-            });
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        runOnUiThread(()->{
+            mSectionsPagerAdapter.notifyDataSetChanged();
+            refreshViewPager();
+            setCurrentPage(currentPage);
+            unlockSendFlag();
+            rotateLoading.stop();
+            //Toast.makeText(MainActivity.this, "天气信息获取成功！", Toast.LENGTH_SHORT).show();
+        });
     }
 
     public void lockSendFlag() {
