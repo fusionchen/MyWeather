@@ -137,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
                 cityCodes.set(0, citycode);
                 cityCodes.saveCityCodes();
             } else {
-                Toast.makeText(this, "定位失败" , Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "定位失败：无法更新当前地点" , Toast.LENGTH_SHORT).show();
             }
             sendGetWeather();
         });
@@ -175,7 +175,8 @@ public class MainActivity extends AppCompatActivity {
         if(mViewPager != null && pageFlag == false)
             currentPage = mViewPager.getCurrentItem();
         pageFlag = false;
-        rotateLoading.start();
+        if(!rotateLoading.isStart())
+            rotateLoading.start();
         refreshTimes = 0;
         lockSendFlag();
         weatherMessageHashMap.clear();
